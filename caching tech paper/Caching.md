@@ -6,11 +6,11 @@
 - Due to the distributed to the cache system  the Workload of backend query has lower costs and allows more flexibility in processing of data.
 - cache can still provide continuous service to the application, making the system more resilient to failures.even if backend database server is unavailable
 ## _**1.CACHING IN SOFTWARE SYSTEM**_ :
-    Caching of data can occur at many different levels in a software system. For Example:
+   Caching of data can occur at many different levels in a software system. For Example:
            
-            1.1. Database
-            1.2. Web Server
-            1.3. Browser
+   1.1. Database
+   1.2. Web Server
+   1.3. Browser
 ![title](Images/caching.png)
 
 ![title](Images/intro2.png)
