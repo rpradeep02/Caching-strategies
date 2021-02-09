@@ -70,14 +70,14 @@ Lazy population|Lazy population has no upfront cache build delay.|..|
 
 
 ## _**3.Maintain Cache and Remote System in Sync :**_
-        The performence of a software can be affected if we dont maintain the dara stored in the cache he data stored in the remote system in a sync
+   The performence of a software can be affected if we dont maintain the dara stored in the cache he data stored in the remote system in a sync
 
 ### _**3.1 Write-through Caching :**_
-        A write-through cache is a cache which allows both reading and writing to it. If the new data is written to a cache that is already exiting, the data is also written to the remote system and the writes are written to the remote system
+   A write-through cache is a cache which allows both reading and writing to it. If the new data is written to a cache that is already exiting, the data is also written to the remote system and the writes are written to the remote system
         Write-through caching works if the remote system can only be updated via the computer keeping the cache. If all data writes goes through the computer with the cache, it is easy to forward the writes to the remote system and update the cache correspondingly
 
 ### _**3.2 Active Expiry :**_
-        the data in the cache is made up-to-date as fast as possible after the update in the remote system and we don't have any unnecessary expirations for data that has not changed, as you may have with time based expiration. We need to be able to detect changes to the remote system. If your remote system is a relational database is considered as a disadvantage, and this database can be updated through different mechanisms, each of these mechanisms need to be able to report what data they have updated. Otherwise you cannot send an expiration message to the computer keeping the cache.
+   The data in the cache is made up-to-date as fast as possible after the update in the remote system and we don't have any unnecessary expirations for data that has not changed, as you may have with time based expiration. We need to be able to detect changes to the remote system. If your remote system is a relational database is considered as a disadvantage, and this database can be updated through different mechanisms, each of these mechanisms need to be able to report what data they have updated. Otherwise you cannot send an expiration message to the computer keeping the cache.
 
 ### _**3.3 Managing Cache Size :**_
 
@@ -91,26 +91,26 @@ Lazy population|Lazy population has no upfront cache build delay.|..|
 
 > 3.3.1. _Time based eviction._ :
             
-        Time based eviction can be used for keeping the cache in sync with the remote system and also to keep the cache size down. Either you have a separate thread running which monitors the cache, or the clean up is done when attempting to read or write a new value to the cache.
+   Time based eviction can be used for keeping the cache in sync with the remote system and also to keep the cache size down. Either you have a separate thread running which monitors the cache, or the clean up is done when attempting to read or write a new value to the cache.
 
 > 3.3.2. _First in, first out_ :
 
-        when you attempt to insert a new value into the cache, you remove the earliest inserted value to make space for the new one.
+   When you attempt to insert a new value into the cache, you remove the earliest inserted value to make space for the new one.
 
 > 3.3.3. _First in, last out_ :
 
-        This method is useful if the first stored values are also the ones that are typically accessed the most. its the opposite of FIFO    
+   This method is useful if the first stored values are also the ones that are typically accessed the most. its the opposite of FIFO    
 
 > 3.3.4. _Least accessed._ :
 
-        The cache values that have been accessed the least number of times are evicted first, but the cache has to keep track of how many times a given value has been accessed. this technique is used to avoid having re-read and store often read values. 
+   The cache values that have been accessed the least number of times are evicted first, but the cache has to keep track of how many times a given value has been accessed. this technique is used to avoid having re-read and store often read values. 
 > 
 > 3.3.5. _Least time between access_ :
 
-        This process takes the time between accesses of a value into account. When a value is accessed the cache marks the t`ime the value was accessed and increases the access count. When the value is accessed the next time, the cache increments the access count, and calculates the average time between all accesses. Values that were once accessed a lot but fade in popularity will have a dropping average time between accesses. Sooner or later the average may drop low enough that the value will be evicted.
+ This process takes the time between accesses of a value into account. When a value is accessed the cache marks the time the value was accessed and increases the access count. When the value is accessed the next time, the cache increments the access count, and calculates the average time between all accesses. Values that were once accessed a lot but fade in popularity will have a dropping average time between accesses. Sooner or later the average may drop low enough that the value will be evicted.
 
 ## _**4. Clustered cache :**_
-        A simple write-through cache cannot be used in a cluster of servers because unlike a single serve your application is distributed across a cluster of servers. If a write operation is executed on a server the cache on the other servers will know nothing of that write operation. In this case we can use either time based expiration or active expiration to make sure that all caches are in sync with the remote system.
+   A simple write-through cache cannot be used in a cluster of servers because unlike a single serve your application is distributed across a cluster of servers. If a write operation is executed on a server the cache on the other servers will know nothing of that write operation. In this case we can use either time based expiration or active expiration to make sure that all caches are in sync with the remote system.
 
 ![title](Images/cluster.png)        
 
@@ -119,38 +119,39 @@ Lazy population|Lazy population has no upfront cache build delay.|..|
 ### _**5.1 Cache-Aside :**_
 ![title](Images/cacheaside.png) 
 
-    The application first checks the cache. then If the data is found in cache, we’ve cache hit. The data is read and returned to the client.If the data is not found in cache, we’ve cache miss. The application has to do some extra work. It asks the database to read the data, returns it to the client and stores the data in cache so the subsequent reads for the same data results in a cache hit.
+  The application first checks the cache. then If the data is found in cache, we’ve cache hit. The data is read and returned to the client.If the data is not found in cache, we’ve cache miss. The application has to do some extra work. It asks the database to read the data, returns it to the client and stores the data in cache so the subsequent reads for the same data results in a cache hit.
     Cache-aside caches are usually general purpose and work best for read-heavy workloads. Systems using cache-aside are resilient to cache failures. even if the cache cluster goes down, the system can still operate by going directly to the database.
     the most common write strategy cache-aside is to write data to the database directly. so that cache may become inconsistent with the database. we can use time to live (TTL) and continue serving stale data until TTL expires. we can either invalidate the cache entry or use an appropriate write strategy
 
 ### _**5.2 Read-Through Cache :**_
 ![title](Images/readthrough.png) 
 
-        When there is a cache miss, it loads missing data from database, populates the cache and returns it to the application. Both cache-aside and read-through strategies load data lazily only when it is first read. here the data model is different than that of the database in cache-aside.this process is supported by the library or stand-alone cache provider.
-        This caches work best for read-heavy workloads when the same data is requested many times. 
-        And the disadvantage of this is that when the data is requested the first time, it always results in cache miss and incurs the extra penalty of loading data to the cache. we can deal with this by ‘warming’ or ‘pre-heating’ the cache by issuing queries manually. 
+   When there is a cache miss, it loads missing data from database, populates the cache and returns it to the application. Both cache-aside and read-through strategies load data lazily only when it is first read. here the data model is different than that of the database in cache-aside.this process is supported by the library or stand-alone cache provider.
+   This caches work best for read-heavy workloads when the same data is requested many times. 
+   And the disadvantage of this is that when the data is requested the first time, it always results in cache miss and incurs the extra penalty of loading data to the cache. we can deal with this by ‘warming’ or ‘pre-heating’ the cache by issuing queries manually. 
 
 ### _**5.3 Write-Through Cache :**_
 ![title](Images/writethrough.png) 
 
-        In Write-Through Cache data is first written to the cache and then to the database. The cache sits in-line with the database and writes always go through the cache to the main database. The data is written to the cache first and then to the main database because of that they introduce extra write latency
-        To avoid this we can  pair it with read-through caches, this way we get all the benefits of read-through and we also get data consistency guarantee, freeing us from using cache invalidation techniques.
-        DynamoDB Accelerator (DAX) is a good example of read-through / write-through cache. It sits inline with DynamoDB and your application. Reads and writes to DynamoDB can be done through DAX.
+   In Write-Through Cache data is first written to the cache and then to the database. The cache sits in-line with the database and writes always go through the cache to the main database. The data is written to the cache first and then to the main database because of that they introduce extra write latency
+   To avoid this we can  pair it with read-through caches, this way we get all the benefits of read-through and we also get data consistency guarantee, freeing us from using cache invalidation techniques.
+   DynamoDB Accelerator (DAX) is a good example of read-through / write-through cache. It sits inline with DynamoDB and your application. Reads and writes to DynamoDB can be done through DAX.
 
 ### _**5.4 Write-Around :**_
 ![title](Images/writearound.png) 
 
-        Here, data is written directly to the database and only the data that is read makes it way into the cache. To provides good performance in situations where data is written once and read less frequently or never. we can combine read-through with Write-around
+   Here, data is written directly to the database and only the data that is read makes it way into the cache. To provides good performance in situations where data is written once and read less frequently or never. we can combine read-through with Write-around
 
 ### _**5.5 write-back:**_
 ![title](Images/write-back.png)
 
-        This writes the data back to the database. also the application writes data to the cache which acknowledges immediately and after some delay.
-        This cache can improve the write performance and are good for write-heavy workloads. and it can be combined with read-through.This cache is also good for mixed workloads, where the most recently updated and accessed data is always available in cache.It’s resilient to database failures and can tolerate some database downtime. If batching or coalescing is supported, it can reduce overall writes to the database, which decreases the load and reduces costs, if the database provider charges by number of requests e.g. DynamoDB. Keep in mind that DAX is write-through so you won’t see any reductions in costs if your application is write heavy.
-        we can use Redis for both cache-aside and write-back to better absorb spikes during peak load. but that disadvantage is that if there’s a cache failure, the data may be permanently lost.
+   This writes the data back to the database. also the application writes data to the cache which acknowledges immediately and after some delay.
+   This cache can improve the write performance and are good for write-heavy workloads. and it can be combined with read-through.This cache is also good for mixed workloads, where the most recently updated and accessed data is always available in cache.It’s resilient to database failures and can tolerate some database downtime. If batching or coalescing is supported, it can reduce overall writes to the database, which decreases the load and reduces costs, if the database provider charges by number of requests e.g. DynamoDB. Keep in mind that DAX is write-through so you won’t see any reductions in costs if your application is write heavy.
+   we can use Redis for both cache-aside and write-back to better absorb spikes during peak load. but that disadvantage is that if there’s a cache failure, the data may be permanently lost.
 
 ## _**CONCLUSION :**_
-        The objecyive of this paper is to improve the Performance and scaling issues that encountered during the new project this paper containns different caching strategies and their pros and cons. we can carefully evaluate our goals, understand data access (read/write) patterns and choose the best strategy or a combination.
+   The objecyive of this paper is to improve the Performance and scaling issues that encountered during the new project this paper containns different caching strategies and their pros and cons. we can carefully evaluate our goals, understand data access (read/write) patterns and choose the best strategy or a combination.
+
 ## _**REFERENCES :**_
 1.Referance on what is caching[Link](https://www.youtube.com/watch?v=_F1U6Rh0wfo&ab_channel=CodingSimplified)
 
