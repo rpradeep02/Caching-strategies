@@ -11,7 +11,7 @@
     1.1. Database
     1.2. Web Server
     1.3. Browser
-![ScreenShot](caching%20tech%20paper/Images/caching.png)
+![ScreenShot](images/caching.png)
 
 ![title](images/intro2.png)
 
@@ -22,7 +22,7 @@
                 1.1.1. Presentation Layer
                 1.1.2. Application Layer
                 1.1.3. Data Tier
-![title](Images/database1.png)
+![title](images/database1.png)
 > 1.1.1. _Presentation Layer_ :
 > 
         Presentation Layer is the User interface that users uses to interact with. It translates tasks and results from the servers so that the users can understand.
@@ -112,38 +112,38 @@ Lazy population|Lazy population has no upfront cache build delay.|..|
 ## _**4. Clustered cache :**_
    A simple write-through cache cannot be used in a cluster of servers because unlike a single serve your application is distributed across a cluster of servers. If a write operation is executed on a server the cache on the other servers will know nothing of that write operation. In this case we can use either time based expiration or active expiration to make sure that all caches are in sync with the remote system.
 
-![title](Images/cluster.png)        
+![title](images/cluster.png)        
 
 ## _**5. Caching Strategies :**_
 
 ### _**5.1 Cache-Aside :**_
-![title](Images/cacheaside.png) 
+![title](images/cacheaside.png) 
 
   The application first checks the cache. then If the data is found in cache, we’ve cache hit. The data is read and returned to the client.If the data is not found in cache, we’ve cache miss. The application has to do some extra work. It asks the database to read the data, returns it to the client and stores the data in cache so the subsequent reads for the same data results in a cache hit.
     Cache-aside caches are usually general purpose and work best for read-heavy workloads. Systems using cache-aside are resilient to cache failures. even if the cache cluster goes down, the system can still operate by going directly to the database.
     the most common write strategy cache-aside is to write data to the database directly. so that cache may become inconsistent with the database. we can use time to live (TTL) and continue serving stale data until TTL expires. we can either invalidate the cache entry or use an appropriate write strategy
 
 ### _**5.2 Read-Through Cache :**_
-![title](Images/readthrough.png) 
+![title](images/readthrough.png) 
 
    When there is a cache miss, it loads missing data from database, populates the cache and returns it to the application. Both cache-aside and read-through strategies load data lazily only when it is first read. here the data model is different than that of the database in cache-aside.this process is supported by the library or stand-alone cache provider.
    This caches work best for read-heavy workloads when the same data is requested many times. 
    And the disadvantage of this is that when the data is requested the first time, it always results in cache miss and incurs the extra penalty of loading data to the cache. we can deal with this by ‘warming’ or ‘pre-heating’ the cache by issuing queries manually. 
 
 ### _**5.3 Write-Through Cache :**_
-![title](Images/writethrough.png) 
+![title](images/writethrough.png) 
 
    In Write-Through Cache data is first written to the cache and then to the database. The cache sits in-line with the database and writes always go through the cache to the main database. The data is written to the cache first and then to the main database because of that they introduce extra write latency
    To avoid this we can  pair it with read-through caches, this way we get all the benefits of read-through and we also get data consistency guarantee, freeing us from using cache invalidation techniques.
    DynamoDB Accelerator (DAX) is a good example of read-through / write-through cache. It sits inline with DynamoDB and your application. Reads and writes to DynamoDB can be done through DAX.
 
 ### _**5.4 Write-Around :**_
-![title](Images/writearound.png) 
+![title](images/writearound.png) 
 
    Here, data is written directly to the database and only the data that is read makes it way into the cache. To provides good performance in situations where data is written once and read less frequently or never. we can combine read-through with Write-around
 
 ### _**5.5 write-back:**_
-![title](Images/write-back.png)
+![title](images/write-back.png)
 
    This writes the data back to the database. also the application writes data to the cache which acknowledges immediately and after some delay.
    This cache can improve the write performance and are good for write-heavy workloads. and it can be combined with read-through.This cache is also good for mixed workloads, where the most recently updated and accessed data is always available in cache.It’s resilient to database failures and can tolerate some database downtime. If batching or coalescing is supported, it can reduce overall writes to the database, which decreases the load and reduces costs, if the database provider charges by number of requests e.g. DynamoDB. Keep in mind that DAX is write-through so you won’t see any reductions in costs if your application is write heavy.
