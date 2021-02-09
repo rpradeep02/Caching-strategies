@@ -8,12 +8,12 @@
 ## _**1.CACHING IN SOFTWARE SYSTEM**_ :
    Caching of data can occur at many different levels in a software system. For Example:
            
-   1.1. Database
-   1.2. Web Server
-   1.3. Browser
+    1.1. Database
+    1.2. Web Server
+    1.3. Browser
 ![ScreenShot](caching%20tech%20paper/Images/caching.png)
 
-![title](Images/intro2.png)
+![title](images/intro2.png)
 
 ### 1.1. _**Database**_ :
         The database may cache data in memory so it does not have to read it from disk.
