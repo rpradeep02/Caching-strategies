@@ -1,6 +1,6 @@
  # Caching Strategies
 ## _**INTRODUCTION**_ :
-    Caching technique is used to speed up the data lookups. Instead of reading the data directly from the source, which could be a database or any other remote system, the data is directly read from a cache on the computer that needs the data. It is also a storge area tha is closer to the entity needing it than the original source. Accessing this cache is faster than accessing the data from its original source. A cache  can be stored in memory or on disk.
+   Caching technique is used to speed up the data lookups. Instead of reading the data directly from the source, which could be a database or any other remote system, the data is directly read from a cache on the computer that needs the data. It is also a storge area tha is closer to the entity needing it than the original source. Accessing this cache is faster than accessing the data from its original source. A cache  can be stored in memory or on disk.
 ###  _**Benefits of using cache :**_ :
 - Through the caching we can reduce worloads for database and make data easied to access this improves the performance drastically
 - Due to the distributed to the cache system  the Workload of backend query has lower costs and allows more flexibility in processing of data.
