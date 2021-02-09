@@ -11,7 +11,7 @@
    1.1. Database
    1.2. Web Server
    1.3. Browser
-![ScreenShot](Images/caching.png)
+![ScreenShot](caching%20tech%20paper/Images/caching.png)
 
 ![title](Images/intro2.png)
 
