@@ -37,10 +37,10 @@
 
 
 ### 1.2 _**Web Server**_:
-        The web server may cache static files like images, CSS files, JavaScript etc. in memory instead of reading that from disk every time they are needed. 
+   The web server may cache static files like images, CSS files, JavaScript etc. in memory instead of reading that from disk every time they are needed. 
 
 ### 1.3. _**Browser**_ :
-        The web application may cache data read from the database, so it does not have to access that in the database via the network every time it is needed. And finally the browser may cache static files and data too. In HTML5 browsers have local storage, an application cache, and a web SQL database
+   The web application may cache data read from the database, so it does not have to access that in the database via the network every time it is needed. And finally the browser may cache static files and data too. In HTML5 browsers have local storage, an application cache, and a web SQL database
 
 ## _**2.Populating the Cache**_ :
         There are two ways to populate the cache
