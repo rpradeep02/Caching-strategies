@@ -153,7 +153,7 @@ Lazy population|Lazy population has no upfront cache build delay.|..|
    The objecyive of this paper is to improve the Performance and scaling issues that encountered during the new project this paper containns different caching strategies and their pros and cons. we can carefully evaluate our goals, understand data access (read/write) patterns and choose the best strategy or a combination.
 
 ## _**REFERENCES :**_
-1.Referance on what is caching[Link](https://www.youtube.com/watch?v=_F1U6Rh0wfo&ab_channel=CodingSimplified)
+1.Reference on what is caching[Link](https://www.youtube.com/watch?v=_F1U6Rh0wfo&ab_channel=CodingSimplified)
 
 [Link2](https://www.youtube.com/watch?v=RgPf5RDv4-s&ab_channel=Udacity)
 
