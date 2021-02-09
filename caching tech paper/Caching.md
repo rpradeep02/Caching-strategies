@@ -11,7 +11,7 @@
    1.1. Database
    1.2. Web Server
    1.3. Browser
-![title](Images/caching.png)
+![Images](Images/caching.png)
 
 ![title](Images/intro2.png)
 
